@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Assistant</title>
+</head>
+<body>
+    <h1>Virtual Assistant</h1>
+    <div>
+        <form id="userInputForm">
+            <input type="text" id="userInput" />
+            <input type="submit" value="Ask" />
+        </form>
+    </div>
+    <div id="responseDiv">
+        <p id="responseText"></p>
+    </div>
+
+    <script>
+        document.getElementById('userInputForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const userInput = document.getElementById('userInput').value;
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'user_input': userInput
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('responseText').textContent = data.response;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
